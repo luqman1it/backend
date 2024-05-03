@@ -13,7 +13,10 @@ class Project extends Model
        'name',
        'description',
        'img_url',
-       'link',
-       'type'
-    ];
+       'link'
+        ];
+
+        public function types(){
+            return $this->hasMany(Type::class);
+        }
 }
