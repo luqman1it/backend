@@ -12,6 +12,7 @@ class Type extends Model
         'name'
      ];
 
+
     //  public function Projects(){
     //     return $this->belongsTo(Project::class);
     // }

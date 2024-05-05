@@ -1,5 +1,8 @@
 <?php
 
+
+use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TypeController;
 use Illuminate\Http\Request;
@@ -20,6 +23,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout')->middleware('auth:api');
+    Route::post('refresh', 'refresh')->middleware('auth:api');
+
+});
+
+
 
 ///////////ProjectRoutes//////////////
 Route::controller(ProjectController::class)->group(function () {
@@ -38,3 +50,4 @@ Route::controller(TypeController::class)->group(function () {
     Route::put('/edittypes/{type}', 'update');
     Route::delete('/deletetype/{type}', 'destroy');
 });
+

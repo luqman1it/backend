@@ -17,10 +17,9 @@ class Project extends Model
        'type_id'
         ];
 
-        // public function types(){
-        //     return $this->hasMany(Type::class);
-        // }
+
         public function type(){
+
             return $this->belongsTo(Type::class);
         }
 }
