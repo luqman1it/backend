@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('description');
             $table->string('img_url');
             $table->string('link');
-            $table->foreignId('type_id');
+            $table->foreignId('type_id')->constrained();
+
             $table->timestamps();
         });
     }
