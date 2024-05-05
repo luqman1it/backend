@@ -26,4 +26,15 @@ Route::controller(AuthController::class)->group(function () {
 
 });
 //contact
-Route::apiResource('contact',ContactController::class);
+//index
+ Route::group(['middleware'=>'auth:api'],function(){
+    //index-contact
+    Route::get('contact',[ContactController::class,'index'])->name('contacts');
+    //Delete-Message(contact)
+    Route::Delete('DeleteContact/{id}',[ContactController::class,'destroy'])->name('DeleteContact');
+//show
+Route::get('showMessage/{id}',[ContactController::class,'show'])->name('showMessage');
+
+    });
+    //store//send message to admin
+    Route::POST('StoreContact',[ContactController::class,'store'])->name('storecontact');
