@@ -1,12 +1,15 @@
 <?php
 
 
+
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +28,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
-    Route::post('register', 'register');
     Route::post('logout', 'logout')->middleware('auth:api');
     Route::post('refresh', 'refresh')->middleware('auth:api');
 
 });
+
+//contact
+Route::apiResource('contact',ContactController::class);
+
 
 
 
@@ -50,4 +56,5 @@ Route::controller(TypeController::class)->group(function () {
     Route::put('/edittypes/{type}', 'update');
     Route::delete('/deletetype/{type}', 'destroy');
 });
+
 
