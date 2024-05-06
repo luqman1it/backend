@@ -8345,6 +8345,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/f52124d50122611e8a40f628cef5c19ff6cc5b57",
                 "reference": "f52124d50122611e8a40f628cef5c19ff6cc5b57",
+
+            "version": "2.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-ignition.git",
+                "reference": "42d986f4ab9d667020264a7481190a4606ebbeb0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-ignition/zipball/42d986f4ab9d667020264a7481190a4606ebbeb0",
+                "reference": "42d986f4ab9d667020264a7481190a4606ebbeb0",
+
                 "shasum": ""
             },
             "require": {
@@ -8423,7 +8435,11 @@
                     "type": "github"
                 }
             ],
+
             "time": "2024-05-02T13:42:49+00:00"
+
+            "time": "2024-04-30T13:56:21+00:00"
+
         },
         {
             "name": "symfony/yaml",
