@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-       
+
          # By default the next user will have password
         # that will be equal to "password" word
         \App\Models\User::factory()->create([

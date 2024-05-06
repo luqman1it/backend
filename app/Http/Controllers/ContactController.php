@@ -62,9 +62,14 @@ class ContactController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Contact $contact)
+    public function show($id)
     {
         //
+        $contact=contact::find($id);
+        return response()->json([
+            'status'=>'Show',
+            'contact' =>$contact,
+        ]);
     }
 
     /**
@@ -78,9 +83,10 @@ class ContactController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Contact $contact)
+    public function destroy($id)
     {
         //
+        $contact=Contact::find($id);
         $contact->delete();
         return response()->json([
 
