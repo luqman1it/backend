@@ -16,16 +16,9 @@ class Project extends Model
         'link',
         'type_id'
          ];
- 
-         public function types(){
-             return $this->belongsTo(Type::class);
-         }
-       'name',
-       'description',
-       'img_url',
-       'link',
-       'type_id'
-        ];
+
+
+        //relation with type
 
 
         public function type(){
