@@ -2,7 +2,6 @@
 
 
 
-use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TypeController;
