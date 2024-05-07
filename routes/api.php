@@ -29,26 +29,22 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('logout', 'logout')->middleware('auth:api');
     Route::post('refresh', 'refresh')->middleware('auth:api');
-
 });
 
 //contact
 
 //index
- Route::group(['middleware'=>'auth:api'],function(){
+Route::group(['middleware' => 'auth:api'], function () {
     //index-contact
-    Route::get('contact',[ContactController::class,'index'])->name('contacts');
+    Route::get('contact', [ContactController::class, 'index'])->name('contacts');
     //Delete-Message(contact)
-    Route::Delete('DeleteContact/{id}',[ContactController::class,'destroy'])->name('DeleteContact');
-//show
+    Route::Delete('DeleteContact/{id}', [ContactController::class, 'destroy'])->name('DeleteContact');
+    //show
 
-    Route::get('showMessage/{id}',[ContactController::class,'show'])->name('showMessage');
-
-    });
-    //store//send message to admin
-    Route::POST('StoreContact',[ContactController::class,'store'])->name('storecontact');
-
-    Route::apiResource('contact',ContactController::class);
+    Route::get('showMessage/{id}', [ContactController::class, 'show'])->name('showMessage');
+});
+//store//send message to admin
+Route::POST('StoreContact', [ContactController::class, 'store'])->name('storecontact');
 
 
 
@@ -71,6 +67,3 @@ Route::middleware('auth:api')->controller(TypeController::class)->group(function
     Route::put('/edittypes/{type}', 'update')->name('edittypes');
     Route::delete('/deletetype/{type}', 'destroy')->name('deletetype');
 });
-
-
-
