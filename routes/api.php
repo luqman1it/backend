@@ -47,15 +47,16 @@ Route::get('showMessage/{id}',[ContactController::class,'show'])->name('showMess
     //store//send message to admin
     Route::POST('StoreContact',[ContactController::class,'store'])->name('storecontact');
 
-Route::apiResource('contact',ContactController::class);
 
 
 
-
-///////////ProjectRoutes//////////////
-Route::controller(ProjectController::class)->group(function () {
+    Route::controller(ProjectController::class)->group(function () {
     Route::get('/allprojects', 'index');
     Route::get('/showprojects/{project}', 'show');
+});
+
+///////////ProjectRoutes/////////////
+Route::middleware('auth:api')->controller(ProjectController::class)->group(function () {
     Route::post('/addprojects', 'store');
     Route::put('/editprojects/{project}', 'update');
     Route::delete('/deleteprojects/{project}', 'destroy');
@@ -63,8 +64,13 @@ Route::controller(ProjectController::class)->group(function () {
 
 ////////////TypeRoutes///////////////
 Route::controller(TypeController::class)->group(function () {
-    Route::get('/alltypes', 'index');
-    Route::get('/showtypes/{type}', 'show');
+Route::get('/alltypes', 'index');
+Route::get('/showtypes/{type}', 'show');
+
+});
+
+
+Route::controller(TypeController::class)->group(function () {
     Route::post('/addtypes', 'store');
     Route::put('/edittypes/{type}', 'update');
     Route::delete('/deletetype/{type}', 'destroy');
