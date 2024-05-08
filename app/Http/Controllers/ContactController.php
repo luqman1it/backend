@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use App\Http\Requests\Contact\StoreContactRequest;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ContactController extends Controller
 {
@@ -49,7 +51,7 @@ class ContactController extends Controller
         catch(Throwable $th)
         {
             Log::debug($th);
-            $e = \Log::error($th->getMessage());
+            $e = Log::error($th->getMessage());
 
             return response()->json([
                 'status' => 'error',

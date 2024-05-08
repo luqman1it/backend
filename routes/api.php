@@ -29,46 +29,41 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
     Route::post('logout', 'logout')->middleware('auth:api');
     Route::post('refresh', 'refresh')->middleware('auth:api');
-
 });
 
 //contact
 
 //index
- Route::group(['middleware'=>'auth:api'],function(){
+Route::group(['middleware' => 'auth:api'], function () {
     //index-contact
-    Route::get('contact',[ContactController::class,'index'])->name('contacts');
+    Route::get('contact', [ContactController::class, 'index'])->name('contacts');
     //Delete-Message(contact)
-    Route::Delete('DeleteContact/{id}',[ContactController::class,'destroy'])->name('DeleteContact');
-//show
-Route::get('showMessage/{id}',[ContactController::class,'show'])->name('showMessage');
+    Route::Delete('DeleteContact/{id}', [ContactController::class, 'destroy'])->name('DeleteContact');
+    //show
 
-    });
-    //store//send message to admin
-    Route::POST('StoreContact',[ContactController::class,'store'])->name('storecontact');
-
-Route::apiResource('contact',ContactController::class);
+    Route::get('showMessage/{id}', [ContactController::class, 'show'])->name('showMessage');
+});
+//store//send message to admin
+Route::POST('StoreContact', [ContactController::class, 'store'])->name('storecontact');
 
 
 
 
 ///////////ProjectRoutes//////////////
-Route::controller(ProjectController::class)->group(function () {
-    Route::get('/allprojects', 'index');
-    Route::get('/showprojects/{project}', 'show');
-    Route::post('/addprojects', 'store');
-    Route::put('/editprojects/{project}', 'update');
-    Route::delete('/deleteprojects/{project}', 'destroy');
+Route::middleware('auth:api')->controller(ProjectController::class)->group(function () {
+
+    Route::get('/allprojects', 'index')->name('projects');
+    Route::get('/showprojects/{project}', 'show')->name('showprojects');
+    Route::post('/addprojects', 'store')->name('addprojects');
+    Route::put('/editprojects/{project}', 'update')->name('editprojects');
+    Route::delete('/deleteprojects/{project}', 'destroy')->name('deleteprojects');
 });
 
 ////////////TypeRoutes///////////////
-Route::controller(TypeController::class)->group(function () {
-    Route::get('/alltypes', 'index');
-    Route::get('/showtypes/{type}', 'show');
-    Route::post('/addtypes', 'store');
-    Route::put('/edittypes/{type}', 'update');
-    Route::delete('/deletetype/{type}', 'destroy');
+Route::middleware('auth:api')->controller(TypeController::class)->group(function () {
+    Route::get('/alltypes', 'index')->name('types');
+    Route::get('/showtypes/{type}', 'show')->name('showtypes');
+    Route::post('/addtypes', 'store')->name('addtypes');
+    Route::put('/edittypes/{type}', 'update')->name('edittypes');
+    Route::delete('/deletetype/{type}', 'destroy')->name('deletetype');
 });
-
-
-
