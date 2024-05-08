@@ -18,7 +18,7 @@ class Project extends Model
          ];
 
 
-        //relation with type
+
 
 
         public function type(){
