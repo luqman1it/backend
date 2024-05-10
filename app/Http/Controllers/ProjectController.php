@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorProject;
 use App\Http\Requests\UpdateProject;
 use App\Models\Project;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use League\Flysystem\Visibility;
 
 class ProjectController extends Controller
 {
@@ -29,13 +33,29 @@ class ProjectController extends Controller
     {
         DB::beginTransaction();
         try {
+
+            $file = $request->img_url;
+            $originalName = $file->getClientOriginalName();
+
+             // Check for double extensions in the file name
+             if (preg_match('/\.[^.]+\./', $originalName)) {
+                throw new Exception(trans('general.notAllowedAction'), 403);
+            }
+
+
+            $storagePath = Storage::disk('public')->put('images', $file, [
+                'visibility' => Visibility::PUBLIC
+            ]);
+
+
             $project =Project::create([
                 'name'=>$request->name,
                 'description'=>$request->description,
-                'img_url'=>$request->file('img_url')->store('images'),
+                'img_url'=>$storagePath,
                 'type_id'=>$request->type_id,
                 'link'=>$request->link
             ]);
+
             DB::commit();
 
             return response()->json([
@@ -88,7 +108,19 @@ class ProjectController extends Controller
               $projectData['description']=$request->description;}
 
             if(isset($request->img_url)){
-              $projectData['img_url']=$request->file('img_url')->store('images');}
+
+              $file = $request->img_url;
+              $originalName = $file->getClientOriginalName();
+
+               // Check for double extensions in the file name
+               if (preg_match('/\.[^.]+\./', $originalName)) {
+                  throw new Exception(trans('general.notAllowedAction'), 403);
+            }
+            $storagePath = Storage::disk('public')->put('images', $file, [
+                'visibility' => Visibility::PUBLIC
+            ]);
+            $projectData['img_url']=$storagePath;
+        }
 
             if(isset($request->type_id)){
               $projectData['type_id']=$request->type_id;}

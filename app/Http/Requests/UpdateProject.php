@@ -24,7 +24,7 @@ class UpdateProject extends FormRequest
         return [
             'name'=>'nullable|string|max:255',
             'description'=>'nullable|string|max:255',
-            'img_url'=>'nullable|file',
+            'img_url'=>'required|file|image|mimetypes:png,jpg,jpeg|mimetypes:image/jpeg,image/jpg',
             'link'=>'nullable|string|max:255',
             'type_id'=>'nullable|integer',
         ];
