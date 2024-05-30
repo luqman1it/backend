@@ -47,22 +47,28 @@ Route::group(['middleware' => 'auth:api'], function () {
 Route::POST('StoreContact', [ContactController::class, 'store'])->name('storecontact');
 
 
-
-
-///////////ProjectRoutes//////////////
-Route::middleware('auth:api')->controller(ProjectController::class)->group(function () {
+Route::controller(ProjectController::class)->group(function () {
 
     Route::get('/allprojects', 'index')->name('projects');
     Route::get('/showprojects/{project}', 'show')->name('showprojects');
+});
+///////////ProjectRoutes//////////////
+Route::middleware('auth:api')->controller(ProjectController::class)->group(function () {
+
     Route::post('/addprojects', 'store')->name('addprojects');
     Route::put('/editprojects/{project}', 'update')->name('editprojects');
     Route::delete('/deleteprojects/{project}', 'destroy')->name('deleteprojects');
 });
 
 ////////////TypeRoutes///////////////
+Route::controller(TypeController::class)->group(function () {
+
+Route::get('/alltypes', 'index')->name('types');
+Route::get('/showtypes/{type}', 'show')->name('showtypes');
+
+});
 Route::middleware('auth:api')->controller(TypeController::class)->group(function () {
-    Route::get('/alltypes', 'index')->name('types');
-    Route::get('/showtypes/{type}', 'show')->name('showtypes');
+
     Route::post('/addtypes', 'store')->name('addtypes');
     Route::put('/edittypes/{type}', 'update')->name('edittypes');
     Route::delete('/deletetype/{type}', 'destroy')->name('deletetype');

@@ -22,10 +22,10 @@ class StorProject extends FormRequest
     public function rules(): array
     {
         return [
-       'name'=>'required|string|max:255',
+       'name'=>'required|string|max:255|unique:projects',
        'description'=>'required|string|max:255',
-       'img_url'=>'required|file',
-       'link'=>'required|string|max:255',
+       'img_url'=> 'required|file|image|mimes:png,jpg|max:10000|mimetypes:image/jpeg,image/png,image/jpg',
+       'link'=>'required|string|max:255|unique:projects',
        'type_id'=>'required|integer',
         ];
     }
