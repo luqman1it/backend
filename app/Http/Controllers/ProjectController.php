@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use League\Flysystem\Visibility;
 
+use App\Http\Traits\UploadImage;
+
 class ProjectController extends Controller
 {
+
+    use UploadImage;
     /**
      * Display a listing of the resource.
      */
@@ -30,33 +34,17 @@ class ProjectController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StorProject $request)
-    {
-        DB::beginTransaction();
-        try {
-
-            $file = $request->img_url;
-            $originalName = $file->getClientOriginalName();
-
-             // Check for double extensions in the file name
-             if (preg_match('/\.[^.]+\./', $originalName)) {
-                throw new Exception(trans('general.notAllowedAction'), 403);
-            }
-
-
-            $storagePath = Storage::disk('public')->put('images', $file, [
-                'visibility' => Visibility::PUBLIC
-            ]);
-
-
+    {      
+            try{
             $project =Project::create([
                 'name'=>$request->name,
                 'description'=>$request->description,
-                'img_url'=>$storagePath,
+                'img_url'=>$this->uploadFile($request, 'Project', 'img_url'),
                 'type_id'=>$request->type_id,
                 'link'=>$request->link
             ]);
 
-            DB::commit();
+         
 
             return response()->json([
                 'status'=>'success',
@@ -65,7 +53,7 @@ class ProjectController extends Controller
 
 
         } catch (\Throwable $e) {
-            DB::rollBack();
+      
             Log::error($e->getMessage());
             return response()->json([
                 'status'=>'error',
