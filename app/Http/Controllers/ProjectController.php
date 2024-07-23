@@ -24,7 +24,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-       
+
         $projects = Project::with('type')->get();
 
         return response()->json([
@@ -54,7 +54,6 @@ class ProjectController extends Controller
             $project->skills()->attach($request->skill_id);
          }
             DB::commit();
-
             return response()->json([
                 'status'=>'success',
                 'project'=>$project,
@@ -160,7 +159,14 @@ class ProjectController extends Controller
                 'status'=>'success',
                 'message'=>'Project deleted'
             ]);
-        }
+        }}
 
+
+        public function count(){
+            $projects=Project::count();
+            return response()->json([
+                'projects'=>$projects
+
+            ]);
     }
 }

@@ -115,4 +115,12 @@ class SkillController extends Controller
             'status'=>'delete'
         ]);
     }
+
+    public function count(){
+        $skill=Skill::count();
+        return response()->json([
+            'skills'=>$skill
+
+        ]);
+    }
 }
