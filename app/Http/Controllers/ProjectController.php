@@ -2,28 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StorProject;
-use App\Http\Requests\UpdateProject;
-use App\Models\Project;
 use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Project;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Str;
 use League\Flysystem\Visibility;
-
-use App\Http\Traits\UploadImage;
+use App\Http\Requests\StorProject;
+use Illuminate\Support\Facades\DB;
+use App\Http\Traits\UpLoadImage;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\UpdateProject;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
 
-    use UploadImage;
+   use UploadImage;
+
+
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+       
         $projects = Project::with('type')->get();
+
         return response()->json([
             'status'=>'success',
             'projects'=>$projects
@@ -34,8 +40,11 @@ class ProjectController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StorProject $request)
+
     {      
-            try{
+          
+        DB::beginTransaction();
+        try {
             $project =Project::create([
                 'name'=>$request->name,
                 'description'=>$request->description,
@@ -44,16 +53,20 @@ class ProjectController extends Controller
                 'link'=>$request->link
             ]);
 
-         
+         if($request->skill_id){
+            $project->skills()->attach($request->skill_id);
+         }
+            DB::commit();
 
             return response()->json([
                 'status'=>'success',
-                'project'=>$project
+                'project'=>$project,
+                'skill'=>$project->skills
             ]);
 
 
         } catch (\Throwable $e) {
-      
+            DB::rollbacl();
             Log::error($e->getMessage());
             return response()->json([
                 'status'=>'error',
@@ -75,6 +88,8 @@ class ProjectController extends Controller
         return response()->json([
             'status'=>'success',
             'project'=>$projects,
+            'skill'=>$projects->skills
+
 
         ]);
 
@@ -85,9 +100,10 @@ class ProjectController extends Controller
      */
     public function update(UpdateProject $request, Project $project)
     {
-        DB::beginTransaction();
-        $projectData=[];
+
         try {
+            DB::beginTransaction();
+            $projectData=[];
             if(isset($request->name)){
 
                $projectData['name']=$request->name;}
@@ -95,33 +111,26 @@ class ProjectController extends Controller
             if(isset($request->description)){
               $projectData['description']=$request->description;}
 
-            if(isset($request->img_url)){
-
-              $file = $request->img_url;
-              $originalName = $file->getClientOriginalName();
-
-               // Check for double extensions in the file name
-               if (preg_match('/\.[^.]+\./', $originalName)) {
-                  throw new Exception(trans('general.notAllowedAction'), 403);
+              if(isset($request->img_url)){
+                $newData['img_url']=$request->img_url?$this->StoreFile($request->img_url,'project'):$project->img_url;
             }
-            $storagePath = Storage::disk('public')->put('images', $file, [
-                'visibility' => Visibility::PUBLIC
-            ]);
-            $projectData['img_url']=$storagePath;
-        }
 
             if(isset($request->type_id)){
               $projectData['type_id']=$request->type_id;}
 
             if(isset($request->link)){
               $projectData['link']=$request->link;}
+              //update many to many
 
+              if($request->skill_id){
+                $project->skills()->sync($request->skill_id);
+             }
             $project->update($projectData);
             DB::commit();
 
             return response()->json([
                 'status'=>'success',
-                'project'=>$projectData
+                'project'=>$project,
             ]);
 
 
@@ -140,10 +149,21 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
-        return response()->json([
-            'status'=>'success',
-            'message'=>'Project deleted'
-        ]);
+        if($project->skills){
+            $project->skills()->detach();
+            $project->delete();
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Project and skill'
+            ]);
+
+        }else{
+            $project->delete();
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Project deleted'
+            ]);
+        }
+
     }
 }

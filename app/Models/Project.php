@@ -17,13 +17,20 @@ class Project extends Model
         'type_id'
          ];
 
-
+protected $hidden=[
+    'pivot'
+];
 
 
 
         public function type(){
 
             return $this->belongsTo(Type::class);
+        }
+        //many to many
+        public function skills()
+        {
+           return $this->beLongsToMany(Skill::class,'project_skill');
         }
 
 }
