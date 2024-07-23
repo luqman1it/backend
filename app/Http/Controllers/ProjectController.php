@@ -66,7 +66,7 @@ class ProjectController extends Controller
 
 
         } catch (\Throwable $e) {
-            DB::rollbacl();
+            DB::rollback();
             Log::error($e->getMessage());
             return response()->json([
                 'status'=>'error',
