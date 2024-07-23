@@ -24,7 +24,7 @@ class UpdateSkillRequest extends FormRequest
         return [
             //
             'name'=>'nullable|string',
-            'image'=>'file|image|mimes:png,jpg|max:10000|mimetypes:image/jpeg,image/png,image/jpg'
+            'image'=>'nullable|file|image|mimes:png,jpg|max:10000|mimetypes:image/jpeg,image/png,image/jpg'
 
         ];
     }
