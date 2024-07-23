@@ -22,24 +22,23 @@ trait UploadImage
      *
      * @throws Exception If the file name contains multiple file extensions.
      */
-    public function uploadFile(Request $request, string $folder, string $fileColumnName)
+    public function uploadFile(Request $request,  string $fileColumnName)
     {
-
         $file = $request->file($fileColumnName);
         $originalName = $file->getClientOriginalName();
 
-        if (preg_match('/\.[^.]+\./', $originalName)) {
+         // Check for double extensions in the file name
+         if (preg_match('/\.[^.]+\./', $originalName)) {
             throw new Exception(trans('general.notAllowedAction'), 403);
         }
 
-        $fileName = Str::random(32);
-        $mime_type = $file->getClientOriginalExtension();;
-        $type = explode('/', $mime_type);
 
-        $path = $file->storeAs($folder, $fileName . '.' . end($type), 'public');
+        $storagePath = Storage::disk('public')->put('images', $file, [
+            'visibility' => Visibility::PUBLIC
+        ]);
 
-        $url = asset(Storage::url($path));
-        return $url;
+
+        return $storagePath;    
     }
 
     /**

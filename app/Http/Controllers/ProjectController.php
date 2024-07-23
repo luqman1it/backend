@@ -39,7 +39,7 @@ class ProjectController extends Controller
             $project =Project::create([
                 'name'=>$request->name,
                 'description'=>$request->description,
-                'img_url'=>$this->uploadFile($request, 'Project', 'img_url'),
+                'img_url'=>$this->uploadFile($request,'img_url'),
                 'type_id'=>$request->type_id,
                 'link'=>$request->link
             ]);
