@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Traits\StoreFileTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateProject;
+use App\Models\Contact;
+use App\Models\Skill;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -164,8 +166,14 @@ class ProjectController extends Controller
 
         public function count(){
             $projects=Project::count();
+            $skills=Skill::count();
+            $Messages=Contact::count();
             return response()->json([
-                'projects'=>$projects
+                'count'=>[
+                'projects'=>$projects,
+                'skills'=>$skills,
+                'Messages'=>$Messages]
+
 
             ]);
     }

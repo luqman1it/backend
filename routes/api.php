@@ -53,7 +53,7 @@ Route::controller(ProjectController::class)->group(function () {
 
     Route::get('/allprojects', 'index')->name('projects');
     Route::get('/showprojects/{project}', 'show')->name('showprojects');
-    Route::get('count_projects','count');
+    Route::get('count','count');
 
 });
 ///////////ProjectRoutes//////////////
@@ -87,6 +87,6 @@ Route::controller(SkillController::class)->group(function () {
 
 Route::get('/get-skills', 'index')->name('get_skills');
 Route::get('/show-skill/{skill}', 'show')->name('show_skill');
-Route::get('count_skills','count');
+// Route::get('count_skills','count');
 
 });
