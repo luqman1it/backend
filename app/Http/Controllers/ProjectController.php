@@ -10,24 +10,23 @@ use Illuminate\Support\Str;
 use League\Flysystem\Visibility;
 use App\Http\Requests\StorProject;
 use Illuminate\Support\Facades\DB;
-use App\Http\Traits\UpLoadImage;
+use App\Http\Traits\StoreFileTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateProject;
+use App\Models\Contact;
+use App\Models\Skill;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
-
-   use UploadImage;
-
-
+    use StoreFileTrait;
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       
+
         $projects = Project::with('type')->get();
 
         return response()->json([
@@ -40,24 +39,23 @@ class ProjectController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StorProject $request)
-
-    {      
-          
+    {
         DB::beginTransaction();
         try {
+
+
+
             $project =Project::create([
                 'name'=>$request->name,
                 'description'=>$request->description,
-                'img_url'=>$this->uploadFile($request,'img_url'),
+                'img_url'=>$this->storeFile($request->img_url,'project'),
                 'type_id'=>$request->type_id,
                 'link'=>$request->link
             ]);
-
          if($request->skill_id){
             $project->skills()->attach($request->skill_id);
          }
             DB::commit();
-
             return response()->json([
                 'status'=>'success',
                 'project'=>$project,
@@ -66,7 +64,7 @@ class ProjectController extends Controller
 
 
         } catch (\Throwable $e) {
-            DB::rollback();
+            DB::rollBack();
             Log::error($e->getMessage());
             return response()->json([
                 'status'=>'error',
@@ -163,7 +161,20 @@ class ProjectController extends Controller
                 'status'=>'success',
                 'message'=>'Project deleted'
             ]);
-        }
+        }}
 
+
+        public function count(){
+            $projects=Project::count();
+            $skills=Skill::count();
+            $Messages=Contact::count();
+            return response()->json([
+                'count'=>[
+                'projects'=>$projects,
+                'skills'=>$skills,
+                'Messages'=>$Messages]
+
+
+            ]);
     }
 }
