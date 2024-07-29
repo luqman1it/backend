@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use League\Flysystem\Visibility;
 use App\Http\Requests\StorProject;
 use Illuminate\Support\Facades\DB;
-use App\Http\Traits\StoreFileTrait;
+use App\Http\Traits\UploadImage
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateProject;
 use App\Models\Contact;
@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
-    use StoreFileTrait;
+    use UploadImage;
+
 
     /**
      * Display a listing of the resource.
@@ -48,7 +49,7 @@ class ProjectController extends Controller
             $project =Project::create([
                 'name'=>$request->name,
                 'description'=>$request->description,
-                'img_url'=>$this->storeFile($request->img_url,'project'),
+                'img_url'=>$this->uploadFile($request,'img_url'),
                 'type_id'=>$request->type_id,
                 'link'=>$request->link
             ]);
