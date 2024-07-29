@@ -59,10 +59,10 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
-        $types=$type->with('projects')->get();
+
         return response()->json([
             'status'=>'success',
-            'types'=>$types
+            'types'=>$type
         ]);
     }
 

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorProject extends FormRequest
+class UpdateSkillRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,11 +22,10 @@ class StorProject extends FormRequest
     public function rules(): array
     {
         return [
-       'name'=>'required|string|max:255|unique:projects',
-       'description'=>'required|string|max:255',
-       'img_url'=> 'required|file|image|mimes:png,jpg,jpeg|max:10000|mimetypes:image/jpeg,image/png,image/jpg,image/jpeg',
-       'link'=>'required|string|max:255|unique:projects',
-       'type_id'=>'required|integer',
+            //
+            'name'=>'nullable|string',
+            'image'=>'nullable|file|image|mimes:png,jpg|max:10000|mimetypes:image/jpeg,image/png,image/jpg'
+
         ];
     }
 }
