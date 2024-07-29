@@ -53,6 +53,7 @@ Route::controller(ProjectController::class)->group(function () {
 
     Route::get('/allprojects', 'index')->name('projects');
     Route::get('/showprojects/{project}', 'show')->name('showprojects');
+    Route::get('count','count');
 });
 ///////////ProjectRoutes//////////////
 Route::middleware('auth:api')->controller(ProjectController::class)->group(function () {
