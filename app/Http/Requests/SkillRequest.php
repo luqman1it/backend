@@ -24,7 +24,7 @@ class SkillRequest extends FormRequest
         return [
             //
             'name' => 'required|string|max:10',
-            'image'=>'required|file|image|mimes:png,jpg|max:10000|mimetypes:image/jpeg,image/png,image/jpg'
+            'image'=>'required|image|mimes:png,jpg|max:10000|mimetypes:image/jpeg,image/png,image/jpg'
         ];
     }
 }

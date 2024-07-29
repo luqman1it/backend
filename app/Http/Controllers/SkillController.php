@@ -10,10 +10,11 @@ use App\Http\Requests\SkillRequest;
 use App\Http\Traits\StoreFileTrait;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\UpdateSkillRequest;
+use App\Http\Traits\UploadImage;
 
 class SkillController extends Controller
 {
-    use StoreFileTrait;
+    use StoreFileTrait,UploadImage;
     /**
      * Display a listing of the resource.
      */
@@ -38,7 +39,7 @@ class SkillController extends Controller
 
           $skill=Skill::create([
             'name' =>$request->name,
-            'image'  =>$this->storeFile($request->image,'skill')
+            'image'  =>$this->UploadImage($request->image)
           ]);
           DB::commit();
           return response()->json([
@@ -83,7 +84,7 @@ class SkillController extends Controller
                 $newData['name']=$request->name;
             }
             if(isset($request->image)){
-                $newData['image']=$request->image?$this->StoreFile($request->image,'skill'):$skill->image;
+                $newData['image']=$request->image?$this->UploadImage($request->image):$skill->image;
             }
             $skill->update($newData);
             DB::commit();
