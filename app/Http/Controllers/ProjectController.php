@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Storage;
 class ProjectController extends Controller
 {
 
-    use StoreFileTrait,UploadImage;
+    use UploadImage;
 
     /**
      * Display a listing of the resource.
